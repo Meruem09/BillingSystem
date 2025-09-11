@@ -1,0 +1,11 @@
+# CustID, Name, Phone, Email, Address
+1, Rahul, 9876543210, rahul@example.com, Patan
+2, Priya, 9876543211, priya@example.com, Ahmedabad
+3, Amit, 9876543212, amit@example.com, Gandhinagar
+4, Sita, 9876543213, sita@example.com, Rajkot
+5, Ravi, 9876543214, ravi@example.com, Surat
+6, Neha, 9876543215, neha@example.com, Vadodara
+7, Kiran, 9876543216, kiran@example.com, Bhavnagar
+8, Maya, 9876543217, maya@example.com, Junagadh
+9, Dev, 9876543218, dev@example.com, Anand
+10, Asha, 9876543219, asha@example.com, Mehsana

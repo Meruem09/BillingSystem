@@ -1,0 +1,1 @@
+# ReceiptID, ItemID, ItemName, Quantity, Price, Total
