@@ -2,6 +2,7 @@
 #define GUI_H
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 #include "customer.h"
 #include "item.h"
 
@@ -52,5 +53,8 @@ void gui_handle_events();
 
 // Global GUI system
 extern GUISystem gui_system;
+
+// Global font
+extern TTF_Font* gui_font;
 
 #endif

@@ -7,6 +7,9 @@
 // Global GUI system
 GUISystem gui_system = {0};
 
+// Global font
+TTF_Font* gui_font = NULL;
+
 // Static variables for tracking state
 static char current_screen[50] = "Main Menu";
 static Customer* current_customer_gui = NULL;
@@ -23,7 +26,12 @@ int gui_init() {
         return 0;
     }
     
-    // Skip TTF initialization for now - use basic drawing
+    // Initialize SDL_ttf
+    if (TTF_Init() == -1) {
+        printf("TTF init failed: %s\n", TTF_GetError());
+        SDL_Quit();
+        return 0;
+    }
     
     // Get screen dimensions to position window in top-right
     SDL_DisplayMode display_mode;
@@ -48,7 +56,6 @@ int gui_init() {
     
     if (!gui_system.window) {
         printf("Window creation failed: %s\n", SDL_GetError());
-        TTF_Quit();
         SDL_Quit();
         return 0;
     }
@@ -58,12 +65,32 @@ int gui_init() {
     if (!gui_system.renderer) {
         printf("Renderer creation failed: %s\n", SDL_GetError());
         SDL_DestroyWindow(gui_system.window);
-        TTF_Quit();
         SDL_Quit();
         return 0;
     }
     
-    // Skip font loading - using basic graphics for now
+    // Try to load a default system font (fallback to simple rendering if not available)
+    // Common font paths for different systems
+    const char* font_paths[] = {
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",                  // DejaVu (found!)
+        "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",  // Ubuntu/Debian
+        "/usr/share/fonts/TTF/DejaVuSans.ttf",                              // Arch/Fedora
+        "/System/Library/Fonts/Arial.ttf",                                  // macOS
+        NULL
+    };
+    
+    for (int i = 0; font_paths[i] != NULL; i++) {
+        gui_font = TTF_OpenFont(font_paths[i], GUI_FONT_SIZE);
+        if (gui_font) {
+            printf("Font loaded: %s\n", font_paths[i]);
+            break;
+        }
+    }
+    
+    if (!gui_font) {
+        printf("Warning: Could not load any font, text will not be rendered\n");
+        // Continue anyway - we'll fall back to rectangle rendering
+    }
     
     gui_system.initialized = 1;
     last_update_time = time(NULL);
@@ -77,25 +104,51 @@ int gui_init() {
 
 void gui_cleanup() {
     if (gui_system.initialized) {
+        if (gui_font) {
+            TTF_CloseFont(gui_font);
+            gui_font = NULL;
+        }
         if (gui_system.renderer) {
             SDL_DestroyRenderer(gui_system.renderer);
         }
         if (gui_system.window) {
             SDL_DestroyWindow(gui_system.window);
         }
+        TTF_Quit();
         SDL_Quit();
         gui_system.initialized = 0;
     }
 }
 
 void gui_render_text(const char* text, int x, int y, Uint8 r, Uint8 g, Uint8 b) {
-    if (!gui_system.initialized || !text) return;
+    if (!gui_system.initialized || !text || strlen(text) == 0) return;
     
-    // For now, draw colored rectangles to represent different types of information
-    // This is a simplified version without actual text rendering
-    SDL_SetRenderDrawColor(gui_system.renderer, r, g, b, 255);
-    SDL_Rect rect = {x, y, (int)strlen(text) * 6, 14}; // Approximate text width
-    SDL_RenderFillRect(gui_system.renderer, &rect);
+    if (gui_font) {
+        // Use SDL_ttf to render text
+        SDL_Color color = {r, g, b, 255};
+        SDL_Surface* text_surface = TTF_RenderText_Solid(gui_font, text, color);
+        
+        if (text_surface) {
+            SDL_Texture* text_texture = SDL_CreateTextureFromSurface(gui_system.renderer, text_surface);
+            
+            if (text_texture) {
+                SDL_Rect dest_rect = {x, y, text_surface->w, text_surface->h};
+                SDL_RenderCopy(gui_system.renderer, text_texture, NULL, &dest_rect);
+                SDL_DestroyTexture(text_texture);
+            }
+            
+            SDL_FreeSurface(text_surface);
+        }
+    } else {
+        // Fallback: draw colored rectangles if font is not available
+        SDL_SetRenderDrawColor(gui_system.renderer, r, g, b, 255);
+        SDL_Rect rect = {x, y, (int)strlen(text) * 8, 16}; // Slightly larger rectangles
+        SDL_RenderFillRect(gui_system.renderer, &rect);
+        
+        // Draw a border to make it more visible
+        SDL_SetRenderDrawColor(gui_system.renderer, 255, 255, 255, 255);
+        SDL_RenderDrawRect(gui_system.renderer, &rect);
+    }
 }
 
 void gui_clear_screen() {
@@ -126,8 +179,9 @@ void gui_update_display() {
     y_pos += GUI_LINE_HEIGHT + 10;
     
     // Current time
-    strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", time_info);
-    sprintf(buffer, "Time: %s", buffer);
+    char time_str[100];
+    strftime(time_str, sizeof(time_str), "%Y-%m-%d %H:%M:%S", time_info);
+    sprintf(buffer, "Time: %s", time_str);
     gui_render_text(buffer, 20, y_pos, GUI_COLOR_TEXT_R, GUI_COLOR_TEXT_G, GUI_COLOR_TEXT_B);
     y_pos += GUI_LINE_HEIGHT + 10;
     
