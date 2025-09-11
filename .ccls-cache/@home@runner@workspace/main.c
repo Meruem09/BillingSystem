@@ -1,9 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "item.h"
-#include "customer.h"
-#include "report.h"
 
 void display_main_menu() {
     printf("\n==================================================\n");

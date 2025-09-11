@@ -26,3 +26,5 @@ args = "make run"
 outputType = "console"
 
 [nix]
+channel = "stable-25_05"
+packages = ["SDL2", "SDL2_ttf"]

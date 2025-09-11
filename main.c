@@ -1,9 +1,11 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "item.h"
 #include "customer.h"
 #include "report.h"
+#include "gui.h"
 
 void display_main_menu() {
     printf("\n==================================================\n");
@@ -82,8 +84,11 @@ void handle_item_management() {
                 scanf("%d", &quantity);
                 if (add_to_cart(item_id, quantity)) {
                     printf("Item added to cart successfully!\n");
+                    gui_update_cart_display();
+                    gui_show_message("Item added to cart!", "success");
                 } else {
                     printf("Failed to add item to cart!\n");
+                    gui_show_message("Failed to add item to cart!", "warning");
                 }
                 break;
                 
@@ -143,8 +148,10 @@ void handle_customer_management() {
                 current_customer = find_customer_by_id(customer_id);
                 if (current_customer) {
                     printf("Selected customer: %s\n", current_customer->name);
+                    gui_set_current_customer(current_customer);
                 } else {
                     printf("Customer not found!\n");
+                    gui_show_message("Customer not found!", "warning");
                 }
                 break;
                 
@@ -184,7 +191,10 @@ void handle_billing() {
                 char* receipt_id = generate_receipt(current_customer);
                 if (receipt_id) {
                     printf("Receipt generated successfully! Receipt ID: %s\n", receipt_id);
+                    float total = get_cart_total();
+                    gui_update_last_transaction(receipt_id, total);
                     clear_cart();
+                    gui_update_cart_display();
                 } else {
                     printf("Failed to generate receipt!\n");
                 }
@@ -256,6 +266,15 @@ int main() {
     load_customers();
     load_receipts();
     
+    // Initialize GUI
+    if (gui_init()) {
+        printf("GUI status window initialized at top-right corner.\n");
+        gui_set_current_screen("Main Menu");
+        gui_show_message("System Ready", "success");
+    } else {
+        printf("Warning: GUI initialization failed. Running in console-only mode.\n");
+    }
+    
     printf("Welcome to XYZ Retail Store Billing System!\n");
     
     while (1) {
@@ -265,19 +284,31 @@ int main() {
         
         switch (choice) {
             case 1:
+                gui_set_current_screen("Item Management");
+                gui_handle_events(); // Process any GUI events
                 handle_item_management();
+                gui_set_current_screen("Main Menu");
                 break;
                 
             case 2:
+                gui_set_current_screen("Customer Management");
+                gui_handle_events();
                 handle_customer_management();
+                gui_set_current_screen("Main Menu");
                 break;
                 
             case 3:
+                gui_set_current_screen("Billing & Checkout");
+                gui_handle_events();
                 handle_billing();
+                gui_set_current_screen("Main Menu");
                 break;
                 
             case 4:
+                gui_set_current_screen("Reports");
+                gui_handle_events();
                 handle_reports();
+                gui_set_current_screen("Main Menu");
                 break;
                 
             case 5:
@@ -288,6 +319,9 @@ int main() {
                 printf("Invalid choice! Please try again.\n");
         }
     }
+    
+    // Cleanup GUI before exit
+    gui_cleanup();
     
     return 0;
 }

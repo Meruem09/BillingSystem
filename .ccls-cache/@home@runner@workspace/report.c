@@ -172,7 +172,7 @@ char* get_next_receipt_id() {
         }
     }
     
-    sprintf(next_id, "R%03d", max_num + 1);
+    snprintf(next_id, sizeof(next_id), "R%03d", max_num + 1);
     return next_id;
 }
 
