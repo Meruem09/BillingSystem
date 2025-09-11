@@ -1,1 +1,3 @@
 # ReceiptID, ItemID, ItemName, Quantity, Price, Total
+R001, 106, Calculator, 5, 250.0, 1250.0
+R001, 103, Pencil, 5, 5.0, 25.0

@@ -1,4 +1,4 @@
-modules = ["python-3.11"]
+modules = ["python-3.11", "c-clang14"]
 [agent]
 expertMode = true
 
@@ -20,7 +20,9 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "python main.py"
+args = "make run"
 
 [workflows.workflow.metadata]
 outputType = "console"
+
+[nix]

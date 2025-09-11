@@ -1,1 +1,2 @@
 # ReceiptID, CustID, Date, TotalAmount
+R001, 6, 2025-09-11, 1275.0
