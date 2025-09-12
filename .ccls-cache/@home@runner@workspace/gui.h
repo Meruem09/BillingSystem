@@ -32,7 +32,6 @@
 typedef struct {
     SDL_Window *window;
     SDL_Renderer *renderer;
-    TTF_Font *font;
     int initialized;
     int window_x;
     int window_y;
@@ -54,5 +53,8 @@ void gui_handle_events();
 
 // Global GUI system
 extern GUISystem gui_system;
+
+// Global font
+extern TTF_Font* gui_font;
 
 #endif
