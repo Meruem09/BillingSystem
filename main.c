@@ -1,3 +1,13 @@
+#define RESET       "\033[0m"
+#define RED         "\033[31m"
+#define GREEN       "\033[32m"
+#define YELLOW      "\033[33m"
+#define BLUE        "\033[34m"
+#define MAGENTA     "\033[35m"
+#define CYAN        "\033[36m"
+#define WHITE       "\033[37m"
+#define BOLD        "\033[1m"
+#define UNDERLINE   "\033[4m"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,50 +18,50 @@
 #include "console_status.h"
 
 void display_main_menu() {
-    printf("\n==================================================\n");
-    printf("     XYZ RETAIL STORE BILLING SYSTEM\n");
-    printf("==================================================\n");
-    printf("1. Item Management\n");
-    printf("2. Customer Management\n");
-    printf("3. Billing & Checkout\n");
-    printf("4. Reports\n");
-    printf("5. Exit\n");
-    printf("==================================================\n");
+    printf("\n%s══════════════════════════════════════════════════%s\n", CYAN, RESET);
+    printf("%s      XYZ RETAIL STORE BILLING SYSTEM%s\n", BOLD, RESET);
+    printf("%s══════════════════════════════════════════════════%s\n", CYAN, RESET);
+    printf("%s1.%s Item Management\n", YELLOW, RESET);
+    printf("%s2.%s Customer Management\n", YELLOW, RESET);
+    printf("%s3.%s Billing & Checkout\n", YELLOW, RESET);
+    printf("%s4.%s Reports\n", YELLOW, RESET);
+    printf("%s5.%s Exit\n", YELLOW, RESET);
+    printf("%s══════════════════════════════════════════════════%s\n", CYAN, RESET);
 }
 
 void display_item_menu() {
-    printf("\n--- ITEM MANAGEMENT ---\n");
-    printf("1. Search Item\n");
-    printf("2. View All Items\n");
-    printf("3. Add Item to Cart\n");
-    printf("4. View Cart\n");
-    printf("5. Remove Item from Cart\n");
-    printf("6. Back to Main Menu\n");
+    printf("\n%s--- ITEM MANAGEMENT --- %s\n", BOLD BLUE, RESET);
+    printf("%s1.%s Search Item\n", YELLOW, RESET);
+    printf("%s2.%s View All Items\n", YELLOW, RESET);
+    printf("%s3.%s Add Item to Cart\n", YELLOW, RESET);
+    printf("%s4.%s View Cart\n", YELLOW, RESET);
+    printf("%s5.%s Remove Item from Cart\n", YELLOW, RESET);
+    printf("%s6.%s Back to Main Menu\n", YELLOW, RESET);
 }
 
 void display_customer_menu() {
-    printf("\n--- CUSTOMER MANAGEMENT ---\n");
-    printf("1. Search Customer\n");
-    printf("2. View All Customers\n");
-    printf("3. Add New Customer\n");
-    printf("4. Select Customer\n");
-    printf("5. Back to Main Menu\n");
+    printf("\n%s--- CUSTOMER MANAGEMENT --- %s\n", BOLD BLUE, RESET);
+    printf("%s1.%s Search Customer\n", YELLOW, RESET);
+    printf("%s2.%s View All Customers\n", YELLOW, RESET);
+    printf("%s3.%s Add New Customer\n", YELLOW, RESET);
+    printf("%s4.%s Select Customer\n", YELLOW, RESET);
+    printf("%s5.%s Back to Main Menu\n", YELLOW, RESET);
 }
 
 void display_billing_menu() {
-    printf("\n--- BILLING & CHECKOUT ---\n");
-    printf("1. View Current Cart\n");
-    printf("2. Generate Receipt\n");
-    printf("3. Clear Cart\n");
-    printf("4. Back to Main Menu\n");
+    printf("\n%s--- BILLING & CHECKOUT --- %s\n", BOLD BLUE, RESET);
+    printf("%s1.%s View Current Cart\n", YELLOW, RESET);
+    printf("%s2.%s Generate Receipt\n", YELLOW, RESET);
+    printf("%s3.%s Clear Cart\n", YELLOW, RESET);
+    printf("%s4.%s Back to Main Menu\n", YELLOW, RESET);
 }
 
 void display_reports_menu() {
-    printf("\n--- REPORTS ---\n");
-    printf("1. Daily Sales Report\n");
-    printf("2. Customer Purchase History\n");
-    printf("3. Item Sales Summary\n");
-    printf("4. Back to Main Menu\n");
+    printf("\n%s--- REPORTS --- %s\n", BOLD BLUE, RESET);
+    printf("%s1.%s Daily Sales Report\n", YELLOW, RESET);
+    printf("%s2.%s Customer Purchase History\n", YELLOW, RESET);
+    printf("%s3.%s Item Sales Summary\n", YELLOW, RESET);
+    printf("%s4.%s Back to Main Menu\n", YELLOW, RESET);
 }
 
 void handle_item_management() {

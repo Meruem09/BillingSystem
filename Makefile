@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-Wall -Wextra -std=c99
-TARGET=xyz_billing
+TARGET=xyz_billing.exe
 SOURCES=main.c item.c customer.c report.c console_status.c
 
 all: $(TARGET)
